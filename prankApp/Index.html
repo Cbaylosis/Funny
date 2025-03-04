@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+        }
+        #yes {
+            background-color: green;
+            color: white;
+        }
+        #no {
+            background-color: red;
+            color: white;
+        }
+        #exit {
+            background-color: black;
+            color: white;
+            display: none;
+        }
+        #message {
+            font-size: 50px;
+            font-weight: bold;
+            color: red;
+            display: none;
+        }
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 id="question">Are you gay?</h2>
+    <div class="buttons" id="button-container">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+    <p id="timer">Time Left: <span id="countdown">6</span> sec</p>
+    <p id="message">YOU ARE GAY</p>
+    <button id="exit">Exit</button>
+</div>
+
+<script>
+    let countdown = 6;
+    let countdownInterval;
+    let timerActive = false;
+
+    document.getElementById("yes").addEventListener("click", function() {
+        showMessage();
+    });
+
+    document.getElementById("no").addEventListener("mouseover", function() {
+        this.style.position = "absolute";
+
+        if (!timerActive) {
+            timerActive = true;
+            countdown = 6;
+            document.getElementById("timer").style.display = "block";
+            document.getElementById("countdown").textContent = countdown;
+
+            countdownInterval = setInterval(() => {
+                countdown--;
+                document.getElementById("countdown").textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    showMessage();
+                }
+            }, 1000);
+        }
+
+        let buttonWidth = this.offsetWidth;
+        let buttonHeight = this.offsetHeight;
+        let padding = 10;
+
+        let maxX = window.innerWidth - buttonWidth - padding;
+        let maxY = window.innerHeight - buttonHeight - padding;
+
+        let x = Math.random() * maxX;
+        let y = Math.random() * maxY;
+
+        this.style.left = `${x}px`;
+        this.style.top = `${y}px`;
+    });
+
+    function showMessage() {
+        document.getElementById("message").style.display = "block";
+        document.getElementById("timer").style.display = "none";
+        document.getElementById("button-container").style.display = "none";
+        document.getElementById("question").style.display = "none";
+        document.getElementById("exit").style.display = "block";
+    }
+
+    document.getElementById("exit").addEventListener("click", function() {
+        let exitCountdown = 5;
+        document.getElementById("message").textContent = `Closing in ${exitCountdown} seconds...`;
+
+        let exitInterval = setInterval(() => {
+            exitCountdown--;
+            document.getElementById("message").textContent = `Closing in ${exitCountdown} seconds...`;
+
+            if (exitCountdown <= 0) {
+                clearInterval(exitInterval);
+                window.close(); // Attempt to close the tab (may not work in all browsers)
+
+                // Fallback: Redirect the user to another page if closing fails
+                window.location.href = "https://example.com";
+            }
+        }, 1000);
+    });
+</script>
+
+</body>
+</html>
